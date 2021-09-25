@@ -166,7 +166,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
 
-                         encontrados++;
+                        encontrados++;
                     };
                 };
 
@@ -345,6 +345,7 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 int main () {
     /* Globals */
     aluno alunos[NUMALUNOS];
+    memset(alunos, 0 , NUMALUNOS * sizeof(aluno));
     int nextPosition = 0;
 
     bool loop = true;
