@@ -26,7 +26,8 @@ typedef struct registro {
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 int cadastro(aluno* adrsAlunos, int* adrsNextPosition);
 void listarTodos(aluno* adrsAlunos, int maxIndice);
-void buscar(aluno* adrsAlunos, int maxIndice);
+void buscar(aluno* adrsAlunos, int* nextPosition);
+void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 
 /* Functions */
 int cadastro(aluno* adrsAlunos, int* adrsNextPosition) {
@@ -69,7 +70,7 @@ int cadastro(aluno* adrsAlunos, int* adrsNextPosition) {
         fflush(stdin);
         fgets(curso, TAMCURSO, stdin);
 
-        for (int i = 0; i < NUMALUNOS; i++) {
+        for (int i = 0; i < *adrsNextPosition; i++) {
             if (adrsAlunos[i].prontuario == prontuario) {
                 printf("\n----- PRONTUARIO JA CADASTRADO -----");
                 return 1;
@@ -115,11 +116,41 @@ void listarTodos(aluno* adrsAlunos, int maxIndice) {
     };
 };
 
-void buscar (aluno *adrsAlunos, int maxIndice) {
+void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
+
+    for (int i = 0; i < qntEncontrados; i++) {
+
+        // Se aluno for o último da lista
+        // Decrementa tamanho da lista 
+        if (adrsEncontrados[i] == (*nextPosition - 1)) {
+            *nextPosition = (*nextPosition) - 1;
+
+        } else {
+            /**
+             * Parte do índice de um aluno encontrado na busca.
+             * 
+             * X = indice do aluno -> subtraido pelo valor de 'i' para obter o índice correto
+             * mesmo apos remover outros alunos.
+             * 
+             * Realoca alunos para 1 índice para trás.
+             */
+
+            for (int x = adrsEncontrados[i] - i; x < *nextPosition; x++) {
+                adrsAlunos[x] = adrsAlunos[x + 1];
+            };
+
+            *nextPosition = (*nextPosition) - 1;
+        };
+    };
+};
+
+void buscar(aluno* adrsAlunos, int* nextPosition) {
 
     fflush(stdin);
 
     char campoBuscar;
+    int indicesEncontrados[1000];
+    int encontrados = 0;
 
     printf("\n> Buscar por: ");
     printf("\n 1- Nome e Sobrenome");
@@ -133,13 +164,10 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
     scanf("%c", &campoBuscar);
     fflush(stdin);
 
-    if (maxIndice < 0) {
+    if ((*nextPosition - 1) < 0) {
         printf("\n----- NENHUM ALUNO CADASTRADO -----\n");
 
     } else {
-
-        int encontrados = 0;
-
         char nomeBuscar[TAMNOME];
         char sobrenomeBuscar[TAMSOBRENOME];
         int prontuarioBuscar;
@@ -157,7 +185,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if ((strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) && (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0)) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
@@ -165,7 +193,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-
+                        
+                        indicesEncontrados[encontrados] = i;
                         encontrados++;
                     };
                 };
@@ -178,7 +207,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 fgets(nomeBuscar, TAMNOME, stdin);
                 nomeBuscar[strlen(nomeBuscar) - 1] = 0;
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
@@ -186,7 +215,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-
+                        
+                        indicesEncontrados[encontrados] = i;
                         encontrados++;
                     };
                 };
@@ -199,7 +229,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
@@ -207,7 +237,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-
+                        
+                        indicesEncontrados[encontrados] = i;
                         encontrados++;
                     };
                 };
@@ -218,7 +249,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 printf("\nProntuario: ");
                 scanf("%i", &prontuarioBuscar);
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (adrsAlunos[i].prontuario == prontuarioBuscar) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
@@ -226,7 +257,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                    
+                        
+                        indicesEncontrados[encontrados] = i;                    
                         encontrados++;
                     };
                 };
@@ -243,7 +275,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 printf("\nAno: ");
                 scanf("%i", &nascBuscar.ano);
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (adrsAlunos[i].datadenascimento.dia == nascBuscar.dia &&
                         adrsAlunos[i].datadenascimento.mes == nascBuscar.mes &&
                         adrsAlunos[i].datadenascimento.ano == nascBuscar.ano) {
@@ -254,7 +286,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-
+                        
+                        indicesEncontrados[encontrados] = i;
                         encontrados++;
                     };
                 };
@@ -267,7 +300,7 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                 fgets(cursoBuscar, TAMNOME, stdin);
                 cursoBuscar[strlen(cursoBuscar) - 1] = 0;
 
-                for (int i = 0; i <= maxIndice; i++) {
+                for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].curso, cursoBuscar) == 0) {
                 
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
@@ -276,7 +309,8 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
                             adrsAlunos[i].datadenascimento.mes,
                             adrsAlunos[i].datadenascimento.ano);
                         printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-
+                        
+                        indicesEncontrados[encontrados] = i;
                         encontrados++;
                     };
                 };
@@ -289,6 +323,17 @@ void buscar (aluno *adrsAlunos, int maxIndice) {
 
         if (encontrados == 0) {
             printf("\n----- NENHUM ALUNO ENCONTRADO -----\n");
+
+        } else {
+            char delete;
+            printf("\n> Deseja remover os alunos encontrados? (s/n): ");
+            fflush(stdin);
+            scanf("%c", &delete);
+
+            if (delete == 's' || delete == 'S') {
+                printf("\n ----- ALUNOS DELETADOS -----\n");
+                deletar(adrsAlunos, nextPosition, indicesEncontrados, encontrados);
+            };
         };
     };
 };
@@ -326,7 +371,7 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '3':
             printf("\nEscolheu 3");
-            buscar(ptrAlunos, (*nextPosition - 1));
+            buscar(ptrAlunos, nextPosition);
 
             break;
 
@@ -345,7 +390,7 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 int main () {
     /* Globals */
     aluno alunos[NUMALUNOS];
-    memset(alunos, 0 , NUMALUNOS * sizeof(aluno));
+    memset(alunos, 0, NUMALUNOS * sizeof(aluno));
     int nextPosition = 0;
 
     bool loop = true;
