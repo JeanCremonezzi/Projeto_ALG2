@@ -119,28 +119,15 @@ void listarTodos(aluno* adrsAlunos, int maxIndice) {
 void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
 
     for (int i = 0; i < qntEncontrados; i++) {
-
-        // Se aluno for o último da lista
-        // Decrementa tamanho da lista 
-        if (adrsEncontrados[i] == (*nextPosition - 1)) {
-            *nextPosition = (*nextPosition) - 1;
-
-        } else {
-            /**
-             * Parte do índice de um aluno encontrado na busca.
-             * 
-             * X = indice do aluno -> subtraido pelo valor de 'i' para obter o índice correto
-             * mesmo apos remover outros alunos.
-             * 
-             * Realoca alunos para 1 índice para trás.
-             */
-
+    
+        if (adrsEncontrados[i] != (*nextPosition - 1)) {
             for (int x = adrsEncontrados[i] - i; x < *nextPosition; x++) {
+                
                 adrsAlunos[x] = adrsAlunos[x + 1];
-            };
-
-            *nextPosition = (*nextPosition) - 1;
+            };            
         };
+
+        *nextPosition = (*nextPosition) - 1;
     };
 };
 
