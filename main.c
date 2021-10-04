@@ -119,16 +119,14 @@ void listarTodos(aluno* adrsAlunos, int maxIndice) {
 void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
 
     for (int i = 0; i < qntEncontrados; i++) {
-    
+
         if (adrsEncontrados[i] != (*nextPosition - 1)) {
-            for (int x = adrsEncontrados[i] - i; x < *nextPosition; x++) {
-                
-                adrsAlunos[x] = adrsAlunos[x + 1];
-            };            
+            adrsAlunos[adrsEncontrados[i]] = adrsAlunos[*nextPosition - 1];
         };
 
         *nextPosition = (*nextPosition) - 1;
     };
+    
 };
 
 void buscar(aluno* adrsAlunos, int* nextPosition) {
