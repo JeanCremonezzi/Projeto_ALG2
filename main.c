@@ -28,6 +28,8 @@ int cadastro(aluno* adrsAlunos, int* adrsNextPosition);
 void listarTodos(aluno* adrsAlunos, int maxIndice);
 void buscar(aluno* adrsAlunos, int* nextPosition);
 void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
+void quicksort (aluno* adrsAlunos, int start, int end);
+int partition (aluno* adrsAlunos, int start, int end);
 
 /* Functions */
 int cadastro(aluno* adrsAlunos, int* adrsNextPosition) {
@@ -126,7 +128,7 @@ void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qn
 
         *nextPosition = (*nextPosition) - 1;
     };
-    
+
 };
 
 void buscar(aluno* adrsAlunos, int* nextPosition) {
@@ -323,6 +325,39 @@ void buscar(aluno* adrsAlunos, int* nextPosition) {
     };
 };
 
+int partition (aluno* adrsAlunos, int start, int end) {
+
+    aluno pivot = adrsAlunos[end];
+    int indexTrocar = start - 1;
+
+    for (int i = start; i < end; i++) {
+        if (adrsAlunos[i].prontuario <= pivot.prontuario) {
+            indexTrocar++;
+
+            // Troca posição
+            aluno aux = adrsAlunos[indexTrocar];
+            adrsAlunos[indexTrocar] = adrsAlunos[i];
+            adrsAlunos[i] = aux;
+        };
+    };
+
+    aluno aux = adrsAlunos[indexTrocar + 1];
+    adrsAlunos[indexTrocar + 1] = pivot;
+    adrsAlunos[end] = aux;
+   
+    return (indexTrocar + 1);
+};
+
+void quicksort (aluno* adrsAlunos, int start, int end) {
+    if (start < end) {
+        int pivot = partition(adrsAlunos, start, end);
+        
+        quicksort(adrsAlunos, start, pivot - 1);
+        quicksort(adrsAlunos, pivot + 1, end);
+
+    }
+};
+
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
     char option;
 
@@ -362,7 +397,8 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '4':
             printf("\nEscolheu 4");
-            
+            quicksort(ptrAlunos, 0, (*nextPosition - 1));
+
             break;
 
         default:
