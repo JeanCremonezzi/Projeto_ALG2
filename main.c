@@ -27,12 +27,12 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 int cadastro(aluno* adrsAlunos, int* adrsNextPosition);
 void listarTodos(aluno* adrsAlunos, int maxIndice);
 void buscar(aluno* adrsAlunos, int* nextPosition);
-void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void quicksort (aluno* adrsAlunos, int start, int end);
-int partition (aluno* adrsAlunos, int start, int end);
+void deletar(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
+void quicksort(aluno* adrsAlunos, int start, int end);
+int partition(aluno* adrsAlunos, int start, int end);
 
 /* Functions */
-int cadastro(aluno* adrsAlunos, int* adrsNextPosition) {
+int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
     /**
      * Verificar campos inseridos
     */
@@ -99,7 +99,7 @@ int cadastro(aluno* adrsAlunos, int* adrsNextPosition) {
     return 0;
 };
 
-void listarTodos(aluno* adrsAlunos, int maxIndice) {
+void listarTodos (aluno* adrsAlunos, int maxIndice) {
 
     if (maxIndice < 0) {
         printf("\n----- NENHUM ALUNO CADASTRADO -----\n");
@@ -128,10 +128,9 @@ void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qn
 
         *nextPosition = (*nextPosition) - 1;
     };
-
 };
 
-void buscar(aluno* adrsAlunos, int* nextPosition) {
+void buscar (aluno* adrsAlunos, int* nextPosition) {
 
     fflush(stdin);
 
@@ -349,16 +348,17 @@ int partition (aluno* adrsAlunos, int start, int end) {
 };
 
 void quicksort (aluno* adrsAlunos, int start, int end) {
+
     if (start < end) {
         int pivot = partition(adrsAlunos, start, end);
         
         quicksort(adrsAlunos, start, pivot - 1);
         quicksort(adrsAlunos, pivot + 1, end);
-
-    }
+    };
 };
 
-void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
+void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
+
     char option;
 
     printf("\n1- Cadastrar aluno\n");
@@ -409,6 +409,7 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 };
 
 int main () {
+    
     /* Globals */
     aluno alunos[NUMALUNOS];
     memset(alunos, 0, NUMALUNOS * sizeof(aluno));
