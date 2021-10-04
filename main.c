@@ -30,6 +30,7 @@ void buscar(aluno* adrsAlunos, int* nextPosition);
 void deletar(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 void quicksort(aluno* adrsAlunos, int start, int end);
 int partition(aluno* adrsAlunos, int start, int end);
+void swap(aluno* alunoA, aluno* alunoB);
 
 /* Functions */
 int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -324,6 +325,12 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
     };
 };
 
+void swap(aluno* alunoA, aluno* alunoB) {
+    aluno aux = *alunoA;
+    *alunoA = *alunoB;
+    *alunoB = aux;
+};
+
 int partition (aluno* adrsAlunos, int start, int end) {
 
     aluno pivot = adrsAlunos[end];
@@ -333,17 +340,12 @@ int partition (aluno* adrsAlunos, int start, int end) {
         if (adrsAlunos[i].prontuario <= pivot.prontuario) {
             indexTrocar++;
 
-            // Troca posição
-            aluno aux = adrsAlunos[indexTrocar];
-            adrsAlunos[indexTrocar] = adrsAlunos[i];
-            adrsAlunos[i] = aux;
+            swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
         };
     };
 
-    aluno aux = adrsAlunos[indexTrocar + 1];
-    adrsAlunos[indexTrocar + 1] = pivot;
-    adrsAlunos[end] = aux;
-   
+    swap(&adrsAlunos[indexTrocar + 1], &adrsAlunos[end]);
+
     return (indexTrocar + 1);
 };
 
