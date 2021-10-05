@@ -28,8 +28,8 @@ int cadastro(aluno* adrsAlunos, int* adrsNextPosition);
 void listarTodos(aluno* adrsAlunos, int maxIndice);
 void buscar(aluno* adrsAlunos, int* nextPosition);
 void deletar(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void quicksort(aluno* adrsAlunos, int start, int end);
-int partition(aluno* adrsAlunos, int start, int end);
+void quicksort(aluno* adrsAlunos, int start, int end, int field);
+int partition(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
 
 /* Functions */
@@ -331,17 +331,38 @@ void swap(aluno* alunoA, aluno* alunoB) {
     *alunoB = aux;
 };
 
-int partition (aluno* adrsAlunos, int start, int end) {
+int partition (aluno* adrsAlunos, int start, int end, int field) {
 
     aluno pivot = adrsAlunos[end];
     int indexTrocar = start - 1;
 
-    for (int i = start; i < end; i++) {
-        if (adrsAlunos[i].prontuario <= pivot.prontuario) {
-            indexTrocar++;
+    switch (field) {
+        case 4:
+            for (int i = start; i < end; i++) {
+                if (adrsAlunos[i].prontuario <= pivot.prontuario) {
+                    indexTrocar++;
 
-            swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-        };
+                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
+                };
+            };
+
+            break;
+
+        case 5:
+            for (int i = start; i < end; i++) {
+                if (strcmp(adrsAlunos[i].curso, pivot.curso) <= 0) {
+                    indexTrocar++;
+
+                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
+                };
+            };
+            
+            break;
+        
+        default:
+            printf("\n----- ERROR: CAMPO INVALIDO -----");
+
+            break;
     };
 
     swap(&adrsAlunos[indexTrocar + 1], &adrsAlunos[end]);
@@ -349,13 +370,13 @@ int partition (aluno* adrsAlunos, int start, int end) {
     return (indexTrocar + 1);
 };
 
-void quicksort (aluno* adrsAlunos, int start, int end) {
+void quicksort (aluno* adrsAlunos, int start, int end, int field) {
 
     if (start < end) {
-        int pivot = partition(adrsAlunos, start, end);
+        int pivot = partition(adrsAlunos, start, end, field);
         
-        quicksort(adrsAlunos, start, pivot - 1);
-        quicksort(adrsAlunos, pivot + 1, end);
+        quicksort(adrsAlunos, start, (pivot - 1), field);
+        quicksort(adrsAlunos, (pivot + 1), end, field);
     };
 };
 
@@ -399,7 +420,19 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '4':
             printf("\nEscolheu 4");
-            quicksort(ptrAlunos, 0, (*nextPosition - 1));
+            
+            int field;
+            fflush(stdin);
+            printf("\nOpçoes de ordenacao:");
+            printf("\n1- Nome e Sobrenome");
+            printf("\n2- Sobrenome e Nome");
+            printf("\n3- Nascimento");
+            printf("\n4- Prontuario");
+            printf("\n5- Curso");
+            printf("\nBuscar por: ");
+            scanf("%i", &field);
+
+            quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
 
             break;
 
