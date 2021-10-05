@@ -335,8 +335,27 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
 
     aluno pivot = adrsAlunos[end];
     int indexTrocar = start - 1;
+    char nomePivot[TAMNOME + TAMSOBRENOME];
 
     switch (field) {
+        case 1:
+            strcpy(nomePivot, pivot.nome);
+            strcat(nomePivot, pivot.sobrenome);
+
+            for (int i = start; i < end; i++) {
+                char nomeAluno[TAMNOME + TAMSOBRENOME];
+                strcpy(nomeAluno, adrsAlunos[i].nome);
+                strcat(nomeAluno, adrsAlunos[i].sobrenome);
+
+                if (strcmp(nomeAluno, nomePivot) <= 0) {
+                    indexTrocar++;
+
+                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
+                };
+            };
+
+            break;
+
         case 4:
             for (int i = start; i < end; i++) {
                 if (adrsAlunos[i].prontuario <= pivot.prontuario) {
