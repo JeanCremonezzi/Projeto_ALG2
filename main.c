@@ -489,13 +489,13 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             
             int field;
             fflush(stdin);
-            printf("\nOpçoes de ordenacao:");
+            printf("\nOpcoes de ordenacao:");
             printf("\n1- Nome e Sobrenome");
             printf("\n2- Sobrenome e Nome");
             printf("\n3- Nascimento");
             printf("\n4- Prontuario");
             printf("\n5- Curso");
-            printf("\nBuscar por: ");
+            printf("\nOrdenar por: ");
             scanf("%i", &field);
 
             quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
