@@ -31,6 +31,7 @@ void deletar(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 int partition(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
+bool datecmp(data dataA, data dataB);
 
 /* Functions */
 int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -323,6 +324,25 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
             };
         };
     };
+};
+
+bool datecmp(data dataA, data dataB) {
+    // Retorna se dataA é menor que dataB
+    if (dataA.ano < dataB.ano) {
+        return true;
+
+    } else if (dataA.ano == dataB.ano) {
+        if (dataA.mes < dataB.mes) {
+            return true;
+
+        } else if (dataA.mes == dataB.mes) {
+            if (dataA.dia <= dataB.dia) {
+                return true;
+            };
+        };
+    };
+
+    return false;
 };
 
 void swap(aluno* alunoA, aluno* alunoB) {
