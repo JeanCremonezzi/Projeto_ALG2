@@ -392,6 +392,15 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
                 };
             };
 
+        case 3:
+            for (int i = start; i < end; i++) {
+                if (datecmp(adrsAlunos[i].datadenascimento, pivot.datadenascimento)) {
+                    indexTrocar++;
+
+                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
+                };
+            };
+
             break;
 
         case 4:
