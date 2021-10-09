@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 /* Constants */
 #define TAMNOME 50
@@ -32,6 +33,7 @@ void quicksort(aluno* adrsAlunos, int start, int end, int field);
 int partition(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
 bool datecmp(data dataA, data dataB);
+char* strLower (char* nome);
 
 /* Functions */
 int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -52,11 +54,13 @@ int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
         fflush(stdin);
         fgets(nome, TAMNOME, stdin);
         nome[strlen(nome) - 1] = 0;
+        strcmp(nome, strLower(nome));
 
         printf("> Sobrenome: ");
         fgets(sobrenome, TAMSOBRENOME, stdin);
         fflush(stdin);
         sobrenome[strlen(sobrenome) - 1] = 0;
+        strcmp(sobrenome, strLower(sobrenome));
 
         printf("> Dia de nascimento: ");
         scanf("%d", &dia);
@@ -73,6 +77,7 @@ int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
         printf("> Curso: ");
         fflush(stdin);
         fgets(curso, TAMCURSO, stdin);
+        strcmp(curso, strLower(curso));
 
         for (int i = 0; i < *adrsNextPosition; i++) {
             if (adrsAlunos[i].prontuario == prontuario) {
@@ -167,11 +172,13 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
                 printf("\nNome: ");
                 fgets(nomeBuscar, TAMNOME, stdin);
                 nomeBuscar[strlen(nomeBuscar) - 1] = 0;
+                strcpy(nomeBuscar, strLower(nomeBuscar));
 
                 printf("\nSobrenome: ");
                 fflush(stdin);
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
+                strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if ((strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) && (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0)) {
@@ -194,6 +201,7 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
                 fflush(stdin);
                 fgets(nomeBuscar, TAMNOME, stdin);
                 nomeBuscar[strlen(nomeBuscar) - 1] = 0;
+                strcpy(nomeBuscar, strLower(nomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) {
@@ -216,6 +224,7 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
                 fflush(stdin);
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
+                strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0) {
@@ -343,6 +352,15 @@ bool datecmp(data dataA, data dataB) {
     };
 
     return false;
+};
+
+char* strLower (char* nome) {
+
+    for (int i = 0; nome[i]; i++) {
+        nome[i] = tolower(nome[i]);
+    };
+
+    return nome;
 };
 
 void swap(aluno* alunoA, aluno* alunoB) {
