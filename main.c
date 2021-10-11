@@ -78,7 +78,7 @@ int push (aluno* adrsAlunos, int* adrsNextPosition) {
 
         for (int i = 0; i < *adrsNextPosition; i++) {
             if (adrsAlunos[i].prontuario == prontuario) {
-                printf("\n----- PRONTUARIO JA CADASTRADO -----");
+                printf("\n-------- PRONTUARIO JA CADASTRADO --------\n\n");
                 return 1;
             };
         };
@@ -94,10 +94,10 @@ int push (aluno* adrsAlunos, int* adrsNextPosition) {
         adrsAlunos[nextPosition] = newAluno;
 
         *adrsNextPosition = nextPosition + 1;
-        printf("\n----- Aluno Adicionado -----\n");
+        printf("\n-------- ALUNO ADICIONADO --------\n\n");
 
     } else {
-        printf("\n----- Maximo de alunos atingido -----\n");
+        printf("\n-------- LIMITE DE ALUNOS CADASTRADOS --------\n\n");
     };
 
     return 0;
@@ -106,19 +106,24 @@ int push (aluno* adrsAlunos, int* adrsNextPosition) {
 void printArray (aluno* adrsAlunos, int maxIndice) {
 
     if (maxIndice < 0) {
-        printf("\n----- NENHUM ALUNO CADASTRADO -----\n");
+        printf("\n---------- NENHUM ALUNO CADASTRADO ---------\n\n");
 
     } else {
         printf("\n> Alunos Cadastrados: \n");
 
         for (int i = 0; i <= maxIndice; i++) {
+
+            printf("\n Aluno %i", (i + 1));
             printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
             printf("\n > Nascimento: %i/%i/%i", 
                 adrsAlunos[i].datadenascimento.dia, 
                 adrsAlunos[i].datadenascimento.mes,
                 adrsAlunos[i].datadenascimento.ano);
-            printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
+            printf("\n > Prontuario e Curso: %i - %s", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
+            printf("\n-----------------//-----------------\n");
         };
+
+        printf("\n\n");
     };
 };
 
@@ -155,7 +160,7 @@ void find (aluno* adrsAlunos, int* nextPosition) {
     fflush(stdin);
 
     if ((*nextPosition - 1) < 0) {
-        printf("\n----- NENHUM ALUNO CADASTRADO -----\n");
+        printf("\n---------- NENHUM ALUNO CADASTRADO ---------\n\n");
 
     } else {
         char nomeBuscar[TAMNOME];
@@ -166,12 +171,12 @@ void find (aluno* adrsAlunos, int* nextPosition) {
 
         switch (campoBuscar) {
             case '1':
-                printf("\nNome: ");
+                printf("\n> Nome: ");
                 fgets(nomeBuscar, TAMNOME, stdin);
                 nomeBuscar[strlen(nomeBuscar) - 1] = 0;
                 strcpy(nomeBuscar, strLower(nomeBuscar));
 
-                printf("\nSobrenome: ");
+                printf("> Sobrenome: ");
                 fflush(stdin);
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
@@ -194,7 +199,7 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '2':
-                printf("\nNome: ");
+                printf("\n> Nome: ");
                 fflush(stdin);
                 fgets(nomeBuscar, TAMNOME, stdin);
                 nomeBuscar[strlen(nomeBuscar) - 1] = 0;
@@ -217,7 +222,7 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '3':
-                printf("\nSobrenome: ");
+                printf("\n> Sobrenome: ");
                 fflush(stdin);
                 fgets(sobrenomeBuscar, TAMNOME, stdin);
                 sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
@@ -240,7 +245,7 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '4':
-                printf("\nProntuario: ");
+                printf("\n> Prontuario: ");
                 scanf("%i", &prontuarioBuscar);
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
@@ -260,13 +265,13 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '5':
-                printf("\nDia: ");
+                printf("\n> Dia: ");
                 scanf("%i", &nascBuscar.dia);
 
-                printf("\nMes: ");
+                printf("> Mes: ");
                 scanf("%i", &nascBuscar.mes);
 
-                printf("\nAno: ");
+                printf("> Ano: ");
                 scanf("%i", &nascBuscar.ano);
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
@@ -289,7 +294,7 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '6':
-                printf("\nCurso: ");
+                printf("\n> Curso: ");
                 fflush(stdin);
                 fgets(cursoBuscar, TAMNOME, stdin);
                 cursoBuscar[strlen(cursoBuscar) - 1] = 0;
@@ -312,11 +317,11 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             default:
-                printf("\n----- Opcao invalida -----\n");
+                printf("\n-------- OPCAO INVALIDA --------\n");
         };
 
         if (encontrados == 0) {
-            printf("\n----- NENHUM ALUNO ENCONTRADO -----\n");
+            printf("\n----- NENHUM ALUNO FOI ENCONTRADO -----\n\n");
 
         } else {
             char deleteChoose;
@@ -325,9 +330,12 @@ void find (aluno* adrsAlunos, int* nextPosition) {
             scanf("%c", &deleteChoose);
 
             if (deleteChoose == 's' || deleteChoose == 'S') {
-                printf("\n ----- ALUNOS DELETADOS -----\n");
+                printf("\n-------- ALUNOS DELETADOS --------");
                 delete(adrsAlunos, nextPosition, indicesEncontrados, encontrados);
             };
+
+            printf("\n\n");
+
         };
     };
 };
@@ -467,6 +475,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
     char option;
 
+    printf("-------- MENU --------");
     printf("\n1- Cadastrar aluno\n");
     printf("2- Listar todos os alunos\n");
     printf("3- Buscar alunos\n");
@@ -478,44 +487,45 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
     switch (option) {
         case '0':
-            printf("\nSaindo...");
+            printf("\n> SAINDO...");
             *ptrLoop = false;
             
             break;
 
         case '1':
-            printf("\nEscolheu 1");
+            printf("\n> CADASTRO DE ALUNO");
             push(ptrAlunos, nextPosition);
 
             break;
 
         case '2':
-            printf("\nEscolheu 2");
+            printf("\n> TOTAL DE ALUNOS CADASTRADOS: %i", *nextPosition);
             printArray(ptrAlunos, (*nextPosition - 1));
 
             break;
 
         case '3':
-            printf("\nEscolheu 3");
+            printf("\n> PROCURAR ALUNO");
             find(ptrAlunos, nextPosition);
 
             break;
 
         case '4':
-            printf("\nEscolheu 4");
+            printf("\n> ORDENAR LISTA DE ALUNOS");
             
             int field;
             fflush(stdin);
-            printf("\nOpcoes de ordenacao:");
-            printf("\n1- Nome e Sobrenome");
-            printf("\n2- Sobrenome e Nome");
-            printf("\n3- Nascimento");
-            printf("\n4- Prontuario");
-            printf("\n5- Curso");
-            printf("\nOrdenar por: ");
+            printf("\n\n Opcoes de ordenacao:");
+            printf("\n 1- Nome e Sobrenome");
+            printf("\n 2- Sobrenome e Nome");
+            printf("\n 3- Nascimento");
+            printf("\n 4- Prontuario");
+            printf("\n 5- Curso");
+            printf("\n\n Ordenar por: ");
             scanf("%i", &field);
 
             quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
+            printArray(ptrAlunos, (*nextPosition - 1));
 
             break;
 
