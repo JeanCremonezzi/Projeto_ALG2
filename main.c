@@ -50,30 +50,35 @@ int push (aluno* adrsAlunos, int* adrsNextPosition) {
         printf("\n> Nome: ");
         fflush(stdin);
         fgets(nome, TAMNOME, stdin);
-        nome[strlen(nome) - 1] = 0;
+        nome[strcspn(nome, "\n")] = 0;
         strcmp(nome, strLower(nome));
 
+        fflush(stdin);
         printf("> Sobrenome: ");
         fgets(sobrenome, TAMSOBRENOME, stdin);
-        fflush(stdin);
-        sobrenome[strlen(sobrenome) - 1] = 0;
+        sobrenome[strcspn(sobrenome, "\n")] = 0;
         strcmp(sobrenome, strLower(sobrenome));
 
+        fflush(stdin);
         printf("> Dia de nascimento: ");
         scanf("%d", &dia);
 
+        fflush(stdin);
         printf("> Mes de nascimento: ");
         scanf("%d", &mes);
 
+        fflush(stdin);
         printf("> Ano de nascimento: ");
         scanf("%d", &ano);
 
+        fflush(stdin);
         printf("> Prontuario: ");
         scanf("%d", &prontuario);
 
-        printf("> Curso: ");
         fflush(stdin);
+        printf("> Curso: ");
         fgets(curso, TAMCURSO, stdin);
+        curso[strcspn(curso, "\n")] = 0;
         strcmp(curso, strLower(curso));
 
         for (int i = 0; i < *adrsNextPosition; i++) {
@@ -172,14 +177,15 @@ void find (aluno* adrsAlunos, int* nextPosition) {
         switch (campoBuscar) {
             case '1':
                 printf("\n> Nome: ");
-                fgets(nomeBuscar, TAMNOME, stdin);
-                nomeBuscar[strlen(nomeBuscar) - 1] = 0;
+                fgets(nomeBuscar, TAMNOME + 1, stdin);
+                nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
+
                 strcpy(nomeBuscar, strLower(nomeBuscar));
 
                 printf("> Sobrenome: ");
                 fflush(stdin);
-                fgets(sobrenomeBuscar, TAMNOME, stdin);
-                sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
+                fgets(sobrenomeBuscar, TAMNOME + 1, stdin);
+                sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
                 strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
@@ -201,8 +207,8 @@ void find (aluno* adrsAlunos, int* nextPosition) {
             case '2':
                 printf("\n> Nome: ");
                 fflush(stdin);
-                fgets(nomeBuscar, TAMNOME, stdin);
-                nomeBuscar[strlen(nomeBuscar) - 1] = 0;
+                fgets(nomeBuscar, TAMNOME + 1, stdin);
+                nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
                 strcpy(nomeBuscar, strLower(nomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
@@ -224,8 +230,8 @@ void find (aluno* adrsAlunos, int* nextPosition) {
             case '3':
                 printf("\n> Sobrenome: ");
                 fflush(stdin);
-                fgets(sobrenomeBuscar, TAMNOME, stdin);
-                sobrenomeBuscar[strlen(sobrenomeBuscar) - 1] = 0;
+                fgets(sobrenomeBuscar, TAMNOME + 1, stdin);
+                sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
                 strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
@@ -296,8 +302,9 @@ void find (aluno* adrsAlunos, int* nextPosition) {
             case '6':
                 printf("\n> Curso: ");
                 fflush(stdin);
-                fgets(cursoBuscar, TAMNOME, stdin);
-                cursoBuscar[strlen(cursoBuscar) - 1] = 0;
+                fgets(cursoBuscar, TAMCURSO, stdin);
+                cursoBuscar[strcspn(cursoBuscar, "\n")] = 0;
+                strcpy(cursoBuscar, strLower(cursoBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
                     if (strcmp(adrsAlunos[i].curso, cursoBuscar) == 0) {
@@ -530,7 +537,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             break;
 
         default:
-            printf("\n----- Opcao invalida -----\n");
+            printf("\n-------- OPCAO INVALIDA --------\n\n");
     };
 
     fflush(stdin);
