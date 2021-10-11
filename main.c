@@ -24,22 +24,19 @@ typedef struct registro {
 } aluno;
 
 /* Prototypes */
-void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
-int cadastro(aluno* adrsAlunos, int* adrsNextPosition);
-void listarTodos(aluno* adrsAlunos, int maxIndice);
-void buscar(aluno* adrsAlunos, int* nextPosition);
-void deletar(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void quicksort(aluno* adrsAlunos, int start, int end, int field);
-int partition(aluno* adrsAlunos, int start, int end, int field);
-void swap(aluno* alunoA, aluno* alunoB);
 bool datecmp(data dataA, data dataB);
-char* strLower (char* nome);
+char* strLower(char* nome);
+int partition(aluno* adrsAlunos, int start, int end, int field);
+int push(aluno* adrsAlunos, int* adrsNextPosition);
+void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
+void find(aluno* adrsAlunos, int* nextPosition);
+void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
+void printArray(aluno* adrsAlunos, int maxIndice);
+void quicksort(aluno* adrsAlunos, int start, int end, int field);
+void swap(aluno* alunoA, aluno* alunoB);
 
 /* Functions */
-int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
-    /**
-     * Verificar campos inseridos
-    */
+int push (aluno* adrsAlunos, int* adrsNextPosition) {
 
     int nextPosition = *adrsNextPosition;
 
@@ -106,7 +103,7 @@ int cadastro (aluno* adrsAlunos, int* adrsNextPosition) {
     return 0;
 };
 
-void listarTodos (aluno* adrsAlunos, int maxIndice) {
+void printArray (aluno* adrsAlunos, int maxIndice) {
 
     if (maxIndice < 0) {
         printf("\n----- NENHUM ALUNO CADASTRADO -----\n");
@@ -125,7 +122,7 @@ void listarTodos (aluno* adrsAlunos, int maxIndice) {
     };
 };
 
-void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
+void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
 
     for (int i = 0; i < qntEncontrados; i++) {
 
@@ -137,7 +134,7 @@ void deletar (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qn
     };
 };
 
-void buscar (aluno* adrsAlunos, int* nextPosition) {
+void find (aluno* adrsAlunos, int* nextPosition) {
 
     fflush(stdin);
 
@@ -322,21 +319,21 @@ void buscar (aluno* adrsAlunos, int* nextPosition) {
             printf("\n----- NENHUM ALUNO ENCONTRADO -----\n");
 
         } else {
-            char delete;
+            char deleteChoose;
             printf("\n> Deseja remover os alunos encontrados? (s/n): ");
             fflush(stdin);
-            scanf("%c", &delete);
+            scanf("%c", &deleteChoose);
 
-            if (delete == 's' || delete == 'S') {
+            if (deleteChoose == 's' || deleteChoose == 'S') {
                 printf("\n ----- ALUNOS DELETADOS -----\n");
-                deletar(adrsAlunos, nextPosition, indicesEncontrados, encontrados);
+                delete(adrsAlunos, nextPosition, indicesEncontrados, encontrados);
             };
         };
     };
 };
 
-bool datecmp(data dataA, data dataB) {
-    // Retorna se dataA é menor que dataB
+bool datecmp (data dataA, data dataB) {
+
     if (dataA.ano < dataB.ano) {
         return true;
 
@@ -363,7 +360,7 @@ char* strLower (char* nome) {
     return nome;
 };
 
-void swap(aluno* alunoA, aluno* alunoB) {
+void swap (aluno* alunoA, aluno* alunoB) {
     aluno aux = *alunoA;
     *alunoA = *alunoB;
     *alunoB = aux;
@@ -488,19 +485,19 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '1':
             printf("\nEscolheu 1");
-            cadastro(ptrAlunos, nextPosition);
+            push(ptrAlunos, nextPosition);
 
             break;
 
         case '2':
             printf("\nEscolheu 2");
-            listarTodos(ptrAlunos, (*nextPosition - 1));
+            printArray(ptrAlunos, (*nextPosition - 1));
 
             break;
 
         case '3':
             printf("\nEscolheu 3");
-            buscar(ptrAlunos, nextPosition);
+            find(ptrAlunos, nextPosition);
 
             break;
 
