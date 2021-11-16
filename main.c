@@ -34,8 +34,8 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
-void createFile(aluno* adrsAlunos, int end);
-int readFile ();
+void createFile(aluno* adrsAlunos, char* fileName, int end);
+void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
 /* Functions */
 int push (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -103,6 +103,8 @@ int push (aluno* adrsAlunos, int* adrsNextPosition) {
         *adrsNextPosition = nextPosition + 1;
         printf("\n-------- ALUNO ADICIONADO --------\n\n");
 
+        createFile(adrsAlunos, "alunos", *adrsNextPosition);
+
     } else {
         printf("\n-------- LIMITE DE ALUNOS CADASTRADOS --------\n\n");
     };
@@ -143,6 +145,9 @@ void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
         };
 
         *nextPosition = (*nextPosition) - 1;
+        
+        createFile(adrsAlunos, "alunos", *nextPosition);
+
     };
 };
 
@@ -480,14 +485,14 @@ void quicksort (aluno* adrsAlunos, int start, int end, int field) {
     };
 };
 
-void createFile (aluno* adrsAlunos, int end) {
+void createFile (aluno* adrsAlunos, char* fileName, int end) {
 
     if (end < 0) {
-        printf("\n ----- NAO EXISTEM ALUNOS CADASTRADOS \n");
+        printf("\n----- NAO EXISTEM ALUNOS CADASTRADOS -----\n");
         
     } else {
 
-        printf("\n> CRIANDO ARQUIVO...\n");
+        printf("\nGERANDO ARQUIVO...");
 
         FILE *arquivo;
         int result;
@@ -495,7 +500,7 @@ void createFile (aluno* adrsAlunos, int end) {
         arquivo = fopen("alunos", "w");
 
         if (arquivo == NULL) {
-            printf("\n ----- NAO FOI POSSIVEL CRIAR O ARQUIVO -----\n");
+            printf("\n----- NAO FOI POSSIVEL GERAR O ARQUIVO -----\n");
             return;
         };
 
@@ -507,28 +512,29 @@ void createFile (aluno* adrsAlunos, int end) {
                 if (feof(arquivo)) {
                     break;
                 };
-                printf("\n ----- ERRO NA ESCRITA DO ARQUIVO ----- \n");
+                printf("\n----- ERRO AO GERAR O ARQUIVO -----\n");
             };
         };
 
-        printf("\n-------- ARQUIVO CRIADO --------\n\n");
+        printf("\nARQUIVO GERADO!\n\n");
 
         fclose(arquivo);
     };
 };
 
-int readFile (aluno* adrsAlunos) {
+void readFile (aluno* adrsAlunos, char* fileName, int* nextPosition) {
 
     FILE *arquivo;
 
-    arquivo = fopen("alunos", "r");
+    arquivo = fopen(fileName, "r");
     int i, result, end = 0;
-    //aluno alunosLidos[NUMALUNOS];
 
     if (arquivo == NULL) {
-        printf("\n ----- NAO FOI POSSIVEL LER O ARQUIVO -----\n");
-        return 0;
+        printf("\n----- NAO FOI POSSIVEL LER O ARQUIVO -----\n\n");
+        return;
     };
+
+    printf("\nLENDO ARQUIVO...");
 
     for (i = 0; i < NUMALUNOS; i++) {
         result = fread(&adrsAlunos[i], sizeof(aluno), 1, arquivo);
@@ -538,15 +544,15 @@ int readFile (aluno* adrsAlunos) {
                 break;
             };
 
-            printf("\n ----- ERRO NA LEITURA DO ARQUIVO ----- \n");
-            return 0;            
+            printf("\n----- ERRO AO LER ARQUIVO -----\n");
+            return;            
+        } else {
+            *nextPosition = i;
         };
-
     };
 
-    printf("\n-------- ARQUIVO CARREGADO --------\n\n");
+    printf("\nARQUIVO CARREGADO!\n\n");
 
-    return i;
 };
 
 void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
@@ -605,19 +611,21 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             scanf("%i", &field);
 
             quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
+            createFile(ptrAlunos, "alunos", *nextPosition);
+
             printArray(ptrAlunos, (*nextPosition - 1));
 
             break;
 
         case '5':
             printf("\n> CRIAR ARQUIVO\n");
-            createFile(ptrAlunos, (*nextPosition - 1));
+            createFile(ptrAlunos, "alunos", *nextPosition);
             
             break;
 
         case '6':
             printf("\n> LER ARQUIVO\n");
-            *nextPosition = readFile(ptrAlunos);
+            readFile(ptrAlunos, "alunos", nextPosition);
 
             break;
 
@@ -634,6 +642,8 @@ int main () {
     aluno alunos[NUMALUNOS];
     memset(alunos, 0, NUMALUNOS * sizeof(aluno));
     int nextPosition = 0;
+
+    readFile(alunos, "alunos", &nextPosition);
 
     bool loop = true;
 
