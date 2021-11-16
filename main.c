@@ -34,6 +34,7 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
+void createFile(aluno* adrsAlunos, int end);
 
 /* Functions */
 int push (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -478,6 +479,41 @@ void quicksort (aluno* adrsAlunos, int start, int end, int field) {
     };
 };
 
+void createFile (aluno* adrsAlunos, int end) {
+
+    if (end < 0) {
+        printf("\n ----- NAO EXISTEM ALUNOS CADASTRADOS \n");
+        
+    } else {
+
+        printf("\n> CRIANDO ARQUIVO...\n");
+
+        FILE *arquivo;
+        int result;
+
+        arquivo = fopen("alunos", "w");
+
+        if (arquivo == NULL) {
+            printf("\n ----- NAO FOI POSSIVEL CRIAR O ARQUIVO -----\n");
+            return;
+        };
+
+        for (int index = 0; index <= end; index++) {
+        
+            result = fwrite(&adrsAlunos[index], sizeof(aluno), 1, arquivo);
+
+            if (result == 0) {
+                printf("\n ----- ERRO NA ESCRITA DO ARQUIVO ----- \n");
+                return;
+            };
+        };
+
+        printf("\n> Arquivo 'alunos' foi criado \n");
+
+        fclose(arquivo);
+    };
+};
+
 void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
     char option;
@@ -487,6 +523,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
     printf("2- Listar todos os alunos\n");
     printf("3- Buscar alunos\n");
     printf("4- Ordenar alunos\n");
+    printf("5- Criar arquivo\n");
     printf("0- Sair\n");
 
     printf("\nEscolha uma opcao: ");
@@ -533,6 +570,11 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
             quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
             printArray(ptrAlunos, (*nextPosition - 1));
+
+            break;
+        case '5':
+            printf("\n> CRIAR ARQUIVO\n");
+            createFile(ptrAlunos, (*nextPosition - 1));
 
             break;
 
