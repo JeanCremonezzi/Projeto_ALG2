@@ -35,6 +35,7 @@ void printArray(aluno* adrsAlunos, int maxIndice);
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
 void createFile(aluno* adrsAlunos, int end);
+int readFile ();
 
 /* Functions */
 int push (aluno* adrsAlunos, int* adrsNextPosition) {
@@ -502,16 +503,50 @@ void createFile (aluno* adrsAlunos, int end) {
         
             result = fwrite(&adrsAlunos[index], sizeof(aluno), 1, arquivo);
 
-            if (result == 0) {
+            if (result != 1) {
+                if (feof(arquivo)) {
+                    break;
+                };
                 printf("\n ----- ERRO NA ESCRITA DO ARQUIVO ----- \n");
-                return;
             };
         };
 
-        printf("\n> Arquivo 'alunos' foi criado \n");
+        printf("\n-------- ARQUIVO CRIADO --------\n\n");
 
         fclose(arquivo);
     };
+};
+
+int readFile (aluno* adrsAlunos) {
+
+    FILE *arquivo;
+
+    arquivo = fopen("alunos", "r");
+    int i, result, end = 0;
+    //aluno alunosLidos[NUMALUNOS];
+
+    if (arquivo == NULL) {
+        printf("\n ----- NAO FOI POSSIVEL LER O ARQUIVO -----\n");
+        return 0;
+    };
+
+    for (i = 0; i < NUMALUNOS; i++) {
+        result = fread(&adrsAlunos[i], sizeof(aluno), 1, arquivo);
+
+        if (result != 1) {
+            if (feof (arquivo)) {
+                break;
+            };
+
+            printf("\n ----- ERRO NA LEITURA DO ARQUIVO ----- \n");
+            return 0;            
+        };
+
+    };
+
+    printf("\n-------- ARQUIVO CARREGADO --------\n\n");
+
+    return i;
 };
 
 void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
@@ -524,6 +559,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
     printf("3- Buscar alunos\n");
     printf("4- Ordenar alunos\n");
     printf("5- Criar arquivo\n");
+    printf("6- Ler arquivo\n");
     printf("0- Sair\n");
 
     printf("\nEscolha uma opcao: ");
@@ -572,9 +608,16 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             printArray(ptrAlunos, (*nextPosition - 1));
 
             break;
+
         case '5':
             printf("\n> CRIAR ARQUIVO\n");
             createFile(ptrAlunos, (*nextPosition - 1));
+            
+            break;
+
+        case '6':
+            printf("\n> LER ARQUIVO\n");
+            *nextPosition = readFile(ptrAlunos);
 
             break;
 
