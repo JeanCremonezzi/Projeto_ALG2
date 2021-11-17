@@ -34,6 +34,8 @@ void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
+void merge (aluno* adrsAlunos, int start, int middle, int end, int field);
+void mergeSort (aluno* adrsAlunos, int start, int end, int field);
 void createFile(aluno* adrsAlunos, char* fileName, int end);
 void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
@@ -485,6 +487,43 @@ void quicksort (aluno* adrsAlunos, int start, int end, int field) {
     };
 };
 
+void merge (aluno* adrsAlunos, int start, int middle, int end, int field) {
+    aluno aux[NUMALUNOS];
+    int i = start, j = middle + 1, k = 0;
+
+    while (i <= middle && j <= end) {
+        if (adrsAlunos[i].prontuario <= adrsAlunos[j].prontuario) {
+            aux[k++] = adrsAlunos[i++];
+
+        } else {
+            aux[k++] = adrsAlunos[j++];
+        };
+    };
+
+    while (i <= middle) {
+        aux[k++] = adrsAlunos[i++];
+    };
+
+    while (j <= end) {
+        aux[k++] = adrsAlunos[j++];
+    };
+
+    for (i = start, k = 0; i <= end; i++, k++) {
+        adrsAlunos[i] = aux[k];
+    };
+};
+
+void mergeSort (aluno* adrsAlunos, int start, int end, int field) {
+    int middle;
+
+    if (start < end) {
+        middle = (start + end) / 2;
+        mergeSort(adrsAlunos, start, middle, field);
+        mergeSort(adrsAlunos, middle + 1, end, field);
+        merge(adrsAlunos, start, middle, end, field);
+    }
+};
+
 void createFile (aluno* adrsAlunos, char* fileName, int end) {
 
     if (end < 0) {
@@ -600,6 +639,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             printf("\n> ORDENAR LISTA DE ALUNOS");
             
             int field;
+            int sortAlg;
             fflush(stdin);
             printf("\n\n Opcoes de ordenacao:");
             printf("\n 1- Nome e Sobrenome");
@@ -610,7 +650,28 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             printf("\n\n Ordenar por: ");
             scanf("%i", &field);
 
-            quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
+            fflush(stdin);
+            printf("\n\n Algoritmos de ordenacao:");
+            printf("\n 1- Quick Sort");
+            printf("\n 2- Merge Sort");
+            printf("\n 3- Insertion Sort");
+            printf("\n 4- Selection Sort");
+            printf("\n\n Qual metodo utilizar: ");
+            scanf("%i", &sortAlg);
+
+            switch (sortAlg) {
+                case 1:
+                    quicksort(ptrAlunos, 0, (*nextPosition - 1), field);
+                    break;
+
+                case 2:
+                    mergeSort(ptrAlunos, 0, (*nextPosition - 1), field);
+                    break;
+
+                default:
+                    break;
+            }
+
             createFile(ptrAlunos, "alunos", *nextPosition);
 
             printArray(ptrAlunos, (*nextPosition - 1));
