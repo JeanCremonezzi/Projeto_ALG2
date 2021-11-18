@@ -360,20 +360,25 @@ void find (aluno* adrsAlunos, int* nextPosition) {
 bool datecmp (data dataA, data dataB) {
 
     if (dataA.ano < dataB.ano) {
-        return true;
+        return 0;
 
     } else if (dataA.ano == dataB.ano) {
         if (dataA.mes < dataB.mes) {
-            return true;
+            return 0;
 
         } else if (dataA.mes == dataB.mes) {
             if (dataA.dia <= dataB.dia) {
-                return true;
+                return 0;
             };
         };
     };
 
-    return false;
+    /*
+    *   return 0 -> dataA < dataB
+    *   return 1 -> dataA > dataB
+    */
+
+    return 1;
 };
 
 char* strLower (char* nome) {
@@ -413,6 +418,10 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
             strcat(fullname2, aluno2.nome);
 
             result = strcmp(fullname1, fullname2);
+
+        case 3:
+            // Compara data nascimento
+            result = datecmp(aluno1.datadenascimento, aluno2.datadenascimento);
 
         default:
             printf("\n----- ERROR: CAMPO INVALIDO -----");
