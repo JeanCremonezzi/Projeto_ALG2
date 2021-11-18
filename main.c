@@ -404,6 +404,16 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
 
             break;
         
+        case 2:
+            // Compara sobrenome e nome
+            strcpy(fullname1, aluno1.sobrenome);
+            strcat(fullname1, aluno1.nome);
+
+            strcpy(fullname2, aluno2.sobrenome);
+            strcat(fullname2, aluno2.nome);
+
+            result = strcmp(fullname1, fullname2);
+
         default:
             printf("\n----- ERROR: CAMPO INVALIDO -----");
 
