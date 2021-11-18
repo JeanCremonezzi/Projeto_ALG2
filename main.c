@@ -32,10 +32,11 @@ void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntE
 void find(aluno* adrsAlunos, int* nextPosition);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
+int compareAlunos(aluno aluno1, aluno aluno2, int field);
 void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
-void merge (aluno* adrsAlunos, int start, int middle, int end, int field);
-void mergeSort (aluno* adrsAlunos, int start, int end, int field);
+void merge(aluno* adrsAlunos, int start, int middle, int end, int field);
+void mergeSort(aluno* adrsAlunos, int start, int end, int field);
 void createFile(aluno* adrsAlunos, char* fileName, int end);
 void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
@@ -384,6 +385,39 @@ char* strLower (char* nome) {
     return nome;
 };
 
+int compareAlunos (aluno aluno1, aluno aluno2, int field) {
+    int result;
+
+    switch (field) {
+        char fullname1[TAMNOME + TAMSOBRENOME];
+        char fullname2[TAMNOME + TAMSOBRENOME];
+
+        case 1:
+            // Compara nome
+            strcpy(fullname1, aluno1.nome);
+            strcat(fullname1, aluno1.sobrenome);
+
+            strcpy(fullname2, aluno2.nome);
+            strcat(fullname2, aluno2.sobrenome);
+
+            result = strcmp(fullname1, fullname2);
+
+            break;
+        
+        default:
+            printf("\n----- ERROR: CAMPO INVALIDO -----");
+
+            break;
+    };
+
+    /*
+    *   result < 0 -> aluno1 < aluno2
+    *   result = 0 -> aluno1 = aluno2
+    *   result > 0 -> aluno1 > aluno2
+    */
+    return result;
+};
+
 void swap (aluno* alunoA, aluno* alunoB) {
     aluno aux = *alunoA;
     *alunoA = *alunoB;
@@ -396,6 +430,15 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
     int indexTrocar = start - 1;
     char nomePivot[TAMNOME + TAMSOBRENOME];
 
+    for (int i = start; i < end; i++) {
+        if (compareAlunos(adrsAlunos[i], pivot, field) <= 0) {
+            indexTrocar++;
+
+            swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
+        };
+    };
+
+    /*
     switch (field) {
         case 1:
             strcpy(nomePivot, pivot.nome);
@@ -471,6 +514,7 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
 
             break;
     };
+    */
 
     swap(&adrsAlunos[indexTrocar + 1], &adrsAlunos[end]);
 
@@ -478,7 +522,6 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
 };
 
 void quicksort (aluno* adrsAlunos, int start, int end, int field) {
-
     if (start < end) {
         int pivot = partition(adrsAlunos, start, end, field);
         
