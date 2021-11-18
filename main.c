@@ -37,6 +37,8 @@ void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
 void merge(aluno* adrsAlunos, int start, int middle, int end, int field);
 void mergeSort(aluno* adrsAlunos, int start, int end, int field);
+int lowest (aluno* adrsAlunos, int start, int end, int field);
+void selectionSort(aluno* adrsAlunos, int end, int field);
 void createFile(aluno* adrsAlunos, char* fileName, int end);
 void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
@@ -513,7 +515,28 @@ void mergeSort (aluno* adrsAlunos, int start, int end, int field) {
         mergeSort(adrsAlunos, start, middle, field);
         mergeSort(adrsAlunos, middle + 1, end, field);
         merge(adrsAlunos, start, middle, end, field);
-    }
+    };
+};
+
+int lowest (aluno* adrsAlunos, int start, int end, int field) {
+    int menor = start;
+
+    for (int i = start + 1; i <= end; i++) {
+        if (compareAlunos(adrsAlunos[i], adrsAlunos[menor], field) <= 0) {
+            menor = i;
+        };
+    };
+
+    return menor;
+};
+
+void selectionSort (aluno* adrsAlunos, int end, int field) {
+    int indexMenor;
+
+    for (int i = 0; i <= end; i++) {
+        indexMenor = lowest(adrsAlunos, i, end, field);
+        swap(&adrsAlunos[i], &adrsAlunos[indexMenor]);
+    };
 };
 
 void createFile (aluno* adrsAlunos, char* fileName, int end) {
@@ -646,8 +669,8 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             printf("\n\n Algoritmos de ordenacao:");
             printf("\n 1- Quick Sort");
             printf("\n 2- Merge Sort");
-            printf("\n 3- Insertion Sort");
-            printf("\n 4- Selection Sort");
+            printf("\n 3- Selection Sort");
+            printf("\n 4- Insertion Sort");
             printf("\n\n Qual metodo utilizar: ");
             scanf("%i", &sortAlg);
 
@@ -658,6 +681,10 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
                 case 2:
                     mergeSort(ptrAlunos, 0, (*nextPosition - 1), field);
+                    break;
+
+                case 3:
+                    selectionSort(ptrAlunos, (*nextPosition - 1), field);
                     break;
 
                 default:
