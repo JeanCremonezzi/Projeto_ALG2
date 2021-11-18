@@ -394,7 +394,8 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
     /*
     *   return < 0 -> aluno1 < aluno2
     *   return = 0 -> aluno1 <= aluno2
-    *   return > 0 -> aluno1 > aluno2
+    *   return = 1 -> aluno1 > aluno2
+    *   return > 1 -> Error
     */
 
     switch (field) {
@@ -410,8 +411,6 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
             strcat(fullname2, aluno2.sobrenome);
 
             return strcmp(fullname1, fullname2);
-
-            break;
         
         case 2:
             // Compara sobrenome e nome
@@ -435,10 +434,13 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
 
             return 1;
 
+        case 5:
+            // Compara prontuario
+            return strcmp(aluno1.curso, aluno2.curso);
+
         default:
             printf("\n----- ERROR: CAMPO INVALIDO -----");
-
-            break;
+            return 2;
     };
 };
 
@@ -455,90 +457,13 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
     char nomePivot[TAMNOME + TAMSOBRENOME];
 
     for (int i = start; i < end; i++) {
+
         if (compareAlunos(adrsAlunos[i], pivot, field) <= 0) {
             indexTrocar++;
 
             swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
         };
     };
-
-    /*
-    switch (field) {
-        case 1:
-            strcpy(nomePivot, pivot.nome);
-            strcat(nomePivot, pivot.sobrenome);
-
-            for (int i = start; i < end; i++) {
-                char nomeAluno[TAMNOME + TAMSOBRENOME];
-                strcpy(nomeAluno, adrsAlunos[i].nome);
-                strcat(nomeAluno, adrsAlunos[i].sobrenome);
-
-                if (strcmp(nomeAluno, nomePivot) <= 0) {
-                    indexTrocar++;
-
-                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-                };
-            };
-
-            break;
-
-        case 2:
-            strcpy(nomePivot, pivot.sobrenome);
-            strcat(nomePivot, pivot.nome);
-
-            for (int i = start; i < end; i++) {
-                char nomeAluno[TAMNOME + TAMSOBRENOME];
-                strcpy(nomeAluno, adrsAlunos[i].sobrenome);
-                strcat(nomeAluno, adrsAlunos[i].nome);
-
-                if (strcmp(nomeAluno, nomePivot) <= 0) {
-                    indexTrocar++;
-
-                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-                };
-            };
-
-            break;
-            
-        case 3:
-            for (int i = start; i < end; i++) {
-                if (datecmp(adrsAlunos[i].datadenascimento, pivot.datadenascimento)) {
-                    indexTrocar++;
-
-                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-                };
-            };
-
-            break;
-
-        case 4:
-            for (int i = start; i < end; i++) {
-                if (adrsAlunos[i].prontuario <= pivot.prontuario) {
-                    indexTrocar++;
-
-                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-                };
-            };
-
-            break;
-
-        case 5:
-            for (int i = start; i < end; i++) {
-                if (strcmp(adrsAlunos[i].curso, pivot.curso) <= 0) {
-                    indexTrocar++;
-
-                    swap(&adrsAlunos[indexTrocar], &adrsAlunos[i]);
-                };
-            };
-            
-            break;
-        
-        default:
-            printf("\n----- ERROR: CAMPO INVALIDO -----");
-
-            break;
-    };
-    */
 
     swap(&adrsAlunos[indexTrocar + 1], &adrsAlunos[end]);
 
