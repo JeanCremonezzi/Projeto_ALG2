@@ -482,9 +482,9 @@ void quicksort (aluno* adrsAlunos, int start, int end, int field) {
 void merge (aluno* adrsAlunos, int start, int middle, int end, int field) {
     aluno aux[NUMALUNOS];
     int i = start, j = middle + 1, k = 0;
-
+    
     while (i <= middle && j <= end) {
-        if (adrsAlunos[i].prontuario <= adrsAlunos[j].prontuario) {
+        if (compareAlunos(adrsAlunos[i], adrsAlunos[j], field) <= 0) {
             aux[k++] = adrsAlunos[i++];
 
         } else {
