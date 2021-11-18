@@ -391,7 +391,11 @@ char* strLower (char* nome) {
 };
 
 int compareAlunos (aluno aluno1, aluno aluno2, int field) {
-    int result;
+    /*
+    *   return < 0 -> aluno1 < aluno2
+    *   return = 0 -> aluno1 <= aluno2
+    *   return > 0 -> aluno1 > aluno2
+    */
 
     switch (field) {
         char fullname1[TAMNOME + TAMSOBRENOME];
@@ -405,7 +409,7 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
             strcpy(fullname2, aluno2.nome);
             strcat(fullname2, aluno2.sobrenome);
 
-            result = strcmp(fullname1, fullname2);
+            return strcmp(fullname1, fullname2);
 
             break;
         
@@ -417,24 +421,25 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
             strcpy(fullname2, aluno2.sobrenome);
             strcat(fullname2, aluno2.nome);
 
-            result = strcmp(fullname1, fullname2);
+            return strcmp(fullname1, fullname2);
 
         case 3:
             // Compara data nascimento
-            result = datecmp(aluno1.datadenascimento, aluno2.datadenascimento);
+            return datecmp(aluno1.datadenascimento, aluno2.datadenascimento);
+
+        case 4:
+            // Compara prontuario
+            if (aluno1.prontuario <= aluno2.prontuario) {
+                return 0;
+            };
+
+            return 1;
 
         default:
             printf("\n----- ERROR: CAMPO INVALIDO -----");
 
             break;
     };
-
-    /*
-    *   result < 0 -> aluno1 < aluno2
-    *   result = 0 -> aluno1 = aluno2
-    *   result > 0 -> aluno1 > aluno2
-    */
-    return result;
 };
 
 void swap (aluno* alunoA, aluno* alunoB) {
