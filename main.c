@@ -37,8 +37,9 @@ void quicksort(aluno* adrsAlunos, int start, int end, int field);
 void swap(aluno* alunoA, aluno* alunoB);
 void merge(aluno* adrsAlunos, int start, int middle, int end, int field);
 void mergeSort(aluno* adrsAlunos, int start, int end, int field);
-int lowest (aluno* adrsAlunos, int start, int end, int field);
+int lowest(aluno* adrsAlunos, int start, int end, int field);
 void selectionSort(aluno* adrsAlunos, int end, int field);
+void insertSort(aluno* adrsAlunos, int end, int field);
 void createFile(aluno* adrsAlunos, char* fileName, int end);
 void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
@@ -539,6 +540,21 @@ void selectionSort (aluno* adrsAlunos, int end, int field) {
     };
 };
 
+void insertSort (aluno* adrsAlunos, int end, int field) {
+
+    for (int index = 1; index <= end; index++) {
+        aluno pivot = adrsAlunos[index];
+        int indexAux = index - 1;
+
+        while (compareAlunos(pivot, adrsAlunos[indexAux], field) <= 0 && indexAux >= 0) {
+            adrsAlunos[indexAux + 1] = adrsAlunos[indexAux];
+            --indexAux;
+        };
+
+        adrsAlunos[indexAux + 1] = pivot;
+    };
+};
+
 void createFile (aluno* adrsAlunos, char* fileName, int end) {
 
     if (end < 0) {
@@ -685,6 +701,10 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
                 case 3:
                     selectionSort(ptrAlunos, (*nextPosition - 1), field);
+                    break;
+
+                case 4:
+                    insertSort(ptrAlunos, (*nextPosition - 1), field);
                     break;
 
                 default:
