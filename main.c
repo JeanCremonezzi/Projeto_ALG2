@@ -26,20 +26,20 @@ typedef struct registro {
 /* Prototypes */
 bool datecmp(data dataA, data dataB);
 char* strLower(char* nome);
-int partition(aluno* adrsAlunos, int start, int end, int field);
+int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 void find(aluno* adrsAlunos, int* nextPosition);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
-int compareAlunos(aluno aluno1, aluno aluno2, int field);
-void quicksort(aluno* adrsAlunos, int start, int end, int field);
+int compareAlunos(aluno aluno1, aluno aluno2, char field);
+void quicksort(aluno* adrsAlunos, int start, int end, char field);
 void swap(aluno* alunoA, aluno* alunoB);
-void merge(aluno* adrsAlunos, int start, int middle, int end, int field);
-void mergeSort(aluno* adrsAlunos, int start, int end, int field);
-int lowest(aluno* adrsAlunos, int start, int end, int field);
-void selectionSort(aluno* adrsAlunos, int end, int field);
-void insertSort(aluno* adrsAlunos, int end, int field);
+void merge(aluno* adrsAlunos, int start, int middle, int end, char field);
+void mergeSort(aluno* adrsAlunos, int start, int end, char field);
+int lowest(aluno* adrsAlunos, int start, int end, char field);
+void selectionSort(aluno* adrsAlunos, int end, char field);
+void insertSort(aluno* adrsAlunos, int end, char field);
 void createFile(aluno* adrsAlunos, char* fileName, int end);
 void readFile(aluno* adrsAlunos, char* fileName, int* nextPosition);
 
@@ -393,7 +393,7 @@ char* strLower (char* nome) {
     return nome;
 };
 
-int compareAlunos (aluno aluno1, aluno aluno2, int field) {
+int compareAlunos (aluno aluno1, aluno aluno2, char field) {
     /*
     *   return < 0 -> aluno1 < aluno2
     *   return = 0 -> aluno1 <= aluno2
@@ -405,7 +405,7 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
         char fullname1[TAMNOME + TAMSOBRENOME];
         char fullname2[TAMNOME + TAMSOBRENOME];
 
-        case 1:
+        case '1':
             // Compara nome
             strcpy(fullname1, aluno1.nome);
             strcat(fullname1, aluno1.sobrenome);
@@ -415,7 +415,7 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
 
             return strcmp(fullname1, fullname2);
         
-        case 2:
+        case '2':
             // Compara sobrenome e nome
             strcpy(fullname1, aluno1.sobrenome);
             strcat(fullname1, aluno1.nome);
@@ -425,11 +425,11 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
 
             return strcmp(fullname1, fullname2);
 
-        case 3:
+        case '3':
             // Compara data nascimento
             return datecmp(aluno1.datadenascimento, aluno2.datadenascimento);
 
-        case 4:
+        case '4':
             // Compara prontuario
             if (aluno1.prontuario <= aluno2.prontuario) {
                 return 0;
@@ -437,7 +437,7 @@ int compareAlunos (aluno aluno1, aluno aluno2, int field) {
 
             return 1;
 
-        case 5:
+        case '5':
             // Compara prontuario
             return strcmp(aluno1.curso, aluno2.curso);
 
@@ -453,7 +453,7 @@ void swap (aluno* alunoA, aluno* alunoB) {
     *alunoB = aux;
 };
 
-int partition (aluno* adrsAlunos, int start, int end, int field) {
+int partition (aluno* adrsAlunos, int start, int end, char field) {
 
     aluno pivot = adrsAlunos[end];
     int indexTrocar = start - 1;
@@ -473,7 +473,7 @@ int partition (aluno* adrsAlunos, int start, int end, int field) {
     return (indexTrocar + 1);
 };
 
-void quicksort (aluno* adrsAlunos, int start, int end, int field) {
+void quicksort (aluno* adrsAlunos, int start, int end, char field) {
     if (start < end) {
         int pivot = partition(adrsAlunos, start, end, field);
         
@@ -482,7 +482,7 @@ void quicksort (aluno* adrsAlunos, int start, int end, int field) {
     };
 };
 
-void merge (aluno* adrsAlunos, int start, int middle, int end, int field) {
+void merge (aluno* adrsAlunos, int start, int middle, int end, char field) {
     aluno aux[NUMALUNOS];
     int i = start, j = middle + 1, k = 0;
     
@@ -508,7 +508,7 @@ void merge (aluno* adrsAlunos, int start, int middle, int end, int field) {
     };
 };
 
-void mergeSort (aluno* adrsAlunos, int start, int end, int field) {
+void mergeSort (aluno* adrsAlunos, int start, int end, char field) {
     int middle;
 
     if (start < end) {
@@ -519,7 +519,7 @@ void mergeSort (aluno* adrsAlunos, int start, int end, int field) {
     };
 };
 
-int lowest (aluno* adrsAlunos, int start, int end, int field) {
+int lowest (aluno* adrsAlunos, int start, int end, char field) {
     int menor = start;
 
     for (int i = start + 1; i <= end; i++) {
@@ -531,7 +531,7 @@ int lowest (aluno* adrsAlunos, int start, int end, int field) {
     return menor;
 };
 
-void selectionSort (aluno* adrsAlunos, int end, int field) {
+void selectionSort (aluno* adrsAlunos, int end, char field) {
     int indexMenor;
 
     for (int i = 0; i <= end; i++) {
@@ -540,7 +540,7 @@ void selectionSort (aluno* adrsAlunos, int end, int field) {
     };
 };
 
-void insertSort (aluno* adrsAlunos, int end, int field) {
+void insertSort (aluno* adrsAlunos, int end, char field) {
 
     for (int index = 1; index <= end; index++) {
         aluno pivot = adrsAlunos[index];
@@ -669,7 +669,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
         case '4':
             printf("\n> ORDENAR LISTA DE ALUNOS");
             
-            int field;
+            char field;
             int sortAlg;
             fflush(stdin);
             printf("\n\n Opcoes de ordenacao:");
@@ -679,7 +679,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
             printf("\n 4- Prontuario");
             printf("\n 5- Curso");
             printf("\n\n Ordenar por: ");
-            scanf("%i", &field);
+            scanf("%c", &field);
 
             fflush(stdin);
             printf("\n\n Algoritmos de ordenacao:");
