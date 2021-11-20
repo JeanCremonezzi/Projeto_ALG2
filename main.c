@@ -167,12 +167,12 @@ void find (aluno* adrsAlunos, int* nextPosition) {
 
     printf("\n> Buscar por: ");
     printf("\n 1- Nome e Sobrenome");
-    printf("\n 2- Nome");
-    printf("\n 3- Sobrenome");
+    printf("\n 2- Sobrenome");
+    printf("\n 3- Nascimento");
     printf("\n 4- Prontuario");
-    printf("\n 5- Nascimento");
-    printf("\n 6- Curso");
-
+    printf("\n 5- Curso");
+    printf("\n 6- Nome");
+    
     printf("\n\n > Escolha um campo: ");
     scanf("%c", &campoBuscar);
     fflush(stdin);
@@ -218,14 +218,14 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '2':
-                printf("\n> Nome: ");
+                printf("\n> Sobrenome: ");
                 fflush(stdin);
-                fgets(nomeBuscar, TAMNOME + 1, stdin);
-                nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
-                strcpy(nomeBuscar, strLower(nomeBuscar));
+                fgets(sobrenomeBuscar, TAMNOME + 1, stdin);
+                sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
+                strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) {
+                    if (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
                             adrsAlunos[i].datadenascimento.dia, 
@@ -241,14 +241,20 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '3':
-                printf("\n> Sobrenome: ");
-                fflush(stdin);
-                fgets(sobrenomeBuscar, TAMNOME + 1, stdin);
-                sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
-                strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
+                printf("\n> Dia: ");
+                scanf("%i", &nascBuscar.dia);
+
+                printf("> Mes: ");
+                scanf("%i", &nascBuscar.mes);
+
+                printf("> Ano: ");
+                scanf("%i", &nascBuscar.ano);
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0) {
+                    if (adrsAlunos[i].datadenascimento.dia == nascBuscar.dia &&
+                        adrsAlunos[i].datadenascimento.mes == nascBuscar.mes &&
+                        adrsAlunos[i].datadenascimento.ano == nascBuscar.ano) {
+
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
                             adrsAlunos[i].datadenascimento.dia, 
@@ -284,20 +290,15 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '5':
-                printf("\n> Dia: ");
-                scanf("%i", &nascBuscar.dia);
-
-                printf("> Mes: ");
-                scanf("%i", &nascBuscar.mes);
-
-                printf("> Ano: ");
-                scanf("%i", &nascBuscar.ano);
+                printf("\n> Curso: ");
+                fflush(stdin);
+                fgets(cursoBuscar, TAMCURSO, stdin);
+                cursoBuscar[strcspn(cursoBuscar, "\n")] = 0;
+                strcpy(cursoBuscar, strLower(cursoBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (adrsAlunos[i].datadenascimento.dia == nascBuscar.dia &&
-                        adrsAlunos[i].datadenascimento.mes == nascBuscar.mes &&
-                        adrsAlunos[i].datadenascimento.ano == nascBuscar.ano) {
-
+                    if (strcmp(adrsAlunos[i].curso, cursoBuscar) == 0) {
+                
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
                             adrsAlunos[i].datadenascimento.dia, 
@@ -313,15 +314,14 @@ void find (aluno* adrsAlunos, int* nextPosition) {
                 break;
 
             case '6':
-                printf("\n> Curso: ");
+                printf("\n> Nome: ");
                 fflush(stdin);
-                fgets(cursoBuscar, TAMCURSO, stdin);
-                cursoBuscar[strcspn(cursoBuscar, "\n")] = 0;
-                strcpy(cursoBuscar, strLower(cursoBuscar));
+                fgets(nomeBuscar, TAMNOME + 1, stdin);
+                nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
+                strcpy(nomeBuscar, strLower(nomeBuscar));
 
                 for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].curso, cursoBuscar) == 0) {
-                
+                    if (strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) {
                         printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
                         printf("\n > Nascimento: %i/%i/%i", 
                             adrsAlunos[i].datadenascimento.dia, 
