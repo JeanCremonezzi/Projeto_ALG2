@@ -1,3 +1,6 @@
-.vscode
-alunos
-main.exe
+# Igonre all...
+*
+
+# ... Except
+!main.c
+!.gitignore
