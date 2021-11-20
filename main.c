@@ -29,8 +29,9 @@ char* strLower(char* nome);
 int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void linearSearch(aluno* adrsAlunos, int* nextPosition);
-void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
+void find(aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy);
+void linearSearch(aluno* adrsAlunos, int* nextPosition, char campoBuscar);
+void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
 void quicksort(aluno* adrsAlunos, int start, int end, char field);
@@ -157,25 +158,10 @@ void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
     };
 };
 
-void linearSearch (aluno* adrsAlunos, int* nextPosition) {
+void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
 
-    fflush(stdin);
-
-    char campoBuscar;
     int indicesEncontrados[1000];
     int encontrados = 0;
-
-    printf("\n> Buscar por: ");
-    printf("\n 1- Nome e Sobrenome");
-    printf("\n 2- Sobrenome");
-    printf("\n 3- Nascimento");
-    printf("\n 4- Prontuario");
-    printf("\n 5- Curso");
-    printf("\n 6- Nome");
-    
-    printf("\n\n > Escolha um campo: ");
-    scanf("%c", &campoBuscar);
-    fflush(stdin);
 
     if ((*nextPosition - 1) < 0) {
         printf("\n---------- NENHUM ALUNO CADASTRADO ---------\n\n");
@@ -625,7 +611,28 @@ void readFile (aluno* adrsAlunos, char* fileName, int* nextPosition) {
 
 };
 
-void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
+void find (aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy) {
+    
+    char campoBuscar;
+
+    fflush(stdin);
+
+    printf("\n> Buscar por: ");
+    printf("\n 1- Nome e Sobrenome");
+    printf("\n 2- Sobrenome");
+    printf("\n 3- Nascimento");
+    printf("\n 4- Prontuario");
+    printf("\n 5- Curso");
+    printf("\n 6- Nome");
+            
+    printf("\n\n > Escolha um campo: ");
+    scanf("%c", &campoBuscar);
+    fflush(stdin);
+
+    linearSearch(adrsAlunos, nextPosition, campoBuscar);
+};
+
+void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy) {
 
     char option;
 
@@ -662,7 +669,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '3':
             printf("\n> PROCURAR ALUNO");
-            linearSearch(ptrAlunos, nextPosition);
+            find(ptrAlunos, nextPosition, ptrOrderedBy);
 
             break;
 
@@ -709,8 +716,9 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
                 default:
                     break;
-            }
+            };
 
+            *ptrOrderedBy = field;
             createFile(ptrAlunos, "alunos", *nextPosition);
 
             printArray(ptrAlunos, (*nextPosition - 1));
@@ -742,12 +750,13 @@ int main () {
     aluno alunos[NUMALUNOS];
     memset(alunos, 0, NUMALUNOS * sizeof(aluno));
     int nextPosition = 0;
+    int orderedBy = 0;
 
     readFile(alunos, "alunos", &nextPosition);
 
     bool loop = true;
 
     while (loop) {
-        menu(&loop, alunos, &nextPosition);
+        menu(&loop, alunos, &nextPosition, &orderedBy);
     };
 };
