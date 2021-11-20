@@ -29,7 +29,7 @@ char* strLower(char* nome);
 int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void find(aluno* adrsAlunos, int* nextPosition);
+void linearSearch(aluno* adrsAlunos, int* nextPosition);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
@@ -157,7 +157,7 @@ void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
     };
 };
 
-void find (aluno* adrsAlunos, int* nextPosition) {
+void linearSearch (aluno* adrsAlunos, int* nextPosition) {
 
     fflush(stdin);
 
@@ -662,7 +662,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition) {
 
         case '3':
             printf("\n> PROCURAR ALUNO");
-            find(ptrAlunos, nextPosition);
+            linearSearch(ptrAlunos, nextPosition);
 
             break;
 
