@@ -167,6 +167,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
         printf("\n---------- NENHUM ALUNO CADASTRADO ---------\n\n");
 
     } else {
+        aluno alunoBuscar;
         char nomeBuscar[TAMNOME];
         char sobrenomeBuscar[TAMSOBRENOME];
         int prontuarioBuscar;
@@ -176,7 +177,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
         switch (campoBuscar) {
             case '1':
                 printf("\n> Nome: ");
-                fgets(nomeBuscar, TAMNOME + 1, stdin);
+                fgets(alunoBuscar.nome, TAMNOME + 1, stdin);
                 nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
 
                 strcpy(nomeBuscar, strLower(nomeBuscar));
@@ -186,20 +187,9 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 fgets(sobrenomeBuscar, TAMNOME + 1, stdin);
                 sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
                 strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
-
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if ((strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) && (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0)) {
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;
-                        encontrados++;
-                    };
-                };
+                
+                strcpy(alunoBuscar.nome, nomeBuscar);
+                strcpy(alunoBuscar.sobrenome, sobrenomeBuscar);
 
                 break;
 
@@ -210,19 +200,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 sobrenomeBuscar[strcspn(sobrenomeBuscar, "\n")] = 0;
                 strcpy(sobrenomeBuscar, strLower(sobrenomeBuscar));
 
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].sobrenome, sobrenomeBuscar) == 0) {
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;
-                        encontrados++;
-                    };
-                };
+                strcpy(alunoBuscar.sobrenome, sobrenomeBuscar);
 
                 break;
 
@@ -236,22 +214,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 printf("> Ano: ");
                 scanf("%i", &nascBuscar.ano);
 
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (adrsAlunos[i].datadenascimento.dia == nascBuscar.dia &&
-                        adrsAlunos[i].datadenascimento.mes == nascBuscar.mes &&
-                        adrsAlunos[i].datadenascimento.ano == nascBuscar.ano) {
-
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;
-                        encontrados++;
-                    };
-                };
+                alunoBuscar.datadenascimento = nascBuscar;
 
                 break;
 
@@ -259,19 +222,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 printf("\n> Prontuario: ");
                 scanf("%i", &prontuarioBuscar);
 
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (adrsAlunos[i].prontuario == prontuarioBuscar) {
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;                    
-                        encontrados++;
-                    };
-                };
+                alunoBuscar.prontuario = prontuarioBuscar;
 
                 break;
 
@@ -282,20 +233,7 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 cursoBuscar[strcspn(cursoBuscar, "\n")] = 0;
                 strcpy(cursoBuscar, strLower(cursoBuscar));
 
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].curso, cursoBuscar) == 0) {
-                
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;
-                        encontrados++;
-                    };
-                };
+                strcpy(alunoBuscar.curso, cursoBuscar);
 
                 break;
 
@@ -306,24 +244,27 @@ void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar) {
                 nomeBuscar[strcspn(nomeBuscar, "\n")] = 0;
                 strcpy(nomeBuscar, strLower(nomeBuscar));
 
-                for (int i = 0; i <= (*nextPosition - 1); i++) {
-                    if (strcmp(adrsAlunos[i].nome, nomeBuscar) == 0) {
-                        printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
-                        printf("\n > Nascimento: %i/%i/%i", 
-                            adrsAlunos[i].datadenascimento.dia, 
-                            adrsAlunos[i].datadenascimento.mes,
-                            adrsAlunos[i].datadenascimento.ano);
-                        printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
-                        
-                        indicesEncontrados[encontrados] = i;
-                        encontrados++;
-                    };
-                };
+                strcpy(alunoBuscar.nome, nomeBuscar);
 
                 break;
 
             default:
                 printf("\n-------- OPCAO INVALIDA --------\n");
+        };
+
+        for (int i = 0; i <= (*nextPosition - 1); i++) {
+            if (compareAlunos(alunoBuscar, adrsAlunos[i], campoBuscar) == 0) {
+                
+                printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[i].nome, adrsAlunos[i].sobrenome);
+                printf("\n > Nascimento: %i/%i/%i", 
+                adrsAlunos[i].datadenascimento.dia, 
+                adrsAlunos[i].datadenascimento.mes,
+                adrsAlunos[i].datadenascimento.ano);
+                printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[i].prontuario, adrsAlunos[i].curso);
+                            
+                indicesEncontrados[encontrados] = i;
+                encontrados++;
+            };
         };
 
         if (encontrados == 0) {
@@ -426,6 +367,10 @@ int compareAlunos (aluno aluno1, aluno aluno2, char field) {
         case '5':
             // Compara prontuario
             return strcmp(aluno1.curso, aluno2.curso);
+
+        case '6':
+            // Compara nome
+            return strcmp(aluno1.nome, aluno2.nome);
 
         default:
             printf("\n----- ERROR: CAMPO INVALIDO -----");
