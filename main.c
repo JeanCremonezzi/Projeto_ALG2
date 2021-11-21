@@ -29,7 +29,7 @@ char* strLower(char* nome);
 int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void find(aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy);
+void find(aluno* adrsAlunos, int* nextPosition, int orderedBy);
 void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
@@ -168,6 +168,10 @@ void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBusc
         };
     };
 };
+
+void binarySearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
+
+}
 
 int datecmp (data dataA, data dataB) {
 
@@ -519,7 +523,7 @@ aluno createAlunoBuscar (char campoBuscar) {
     return alunoBuscar;
 };
 
-void find (aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy) {
+void find (aluno* adrsAlunos, int* nextPosition, int orderedBy) {
     
     if ((*nextPosition) <= 0) {
         printf("\n\n----- NENHUM ALUNO CADASTRADO -----\n\n");
@@ -546,7 +550,12 @@ void find (aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy) {
 
         aluno alunoChave = createAlunoBuscar(campoBuscar);
         
-        linearSearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+        if (campoBuscar == orderedBy) {
+            binarySearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+
+        } else {
+            linearSearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+        };
 
         if (qntEncontrados == 0) {
             printf("\n----- NENHUM ALUNO FOI ENCONTRADO -----\n\n");
@@ -617,7 +626,7 @@ void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy
 
         case '3':
             printf("\n> PROCURAR ALUNO");
-            find(ptrAlunos, nextPosition, ptrOrderedBy);
+            find(ptrAlunos, nextPosition, (*ptrOrderedBy));
 
             break;
 
