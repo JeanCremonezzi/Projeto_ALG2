@@ -30,7 +30,7 @@ int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 void find(aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy);
-void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
+void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
@@ -158,9 +158,9 @@ void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
     };
 };
 
-void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
+void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
 
-    for (int i = 0; i <= (*nextPosition - 1); i++) {
+    for (int i = 0; i <= end; i++) {
         if (compareAlunos(alunoBuscar, adrsAlunos[i], campoBuscar) == 0) {
                                             
             adrsIndexEncontrados[*qntEncontrados] = i;
@@ -546,7 +546,7 @@ void find (aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy) {
 
         aluno alunoChave = createAlunoBuscar(campoBuscar);
         
-        linearSearch(adrsAlunos, nextPosition, campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+        linearSearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
 
         if (qntEncontrados == 0) {
             printf("\n----- NENHUM ALUNO FOI ENCONTRADO -----\n\n");
