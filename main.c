@@ -29,10 +29,10 @@ char* strLower(char* nome);
 int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
-void find(aluno* adrsAlunos, int* nextPosition, int orderedBy);
+void find(aluno* adrsAlunos, int* nextPosition, char orderedBy);
 void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
-void binarySearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
-void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
+void binarySearch (aluno* adrsAlunos, int start, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
+void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, char* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
 void quicksort(aluno* adrsAlunos, int start, int end, char field);
@@ -170,25 +170,30 @@ void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBusc
     };
 };
 
-void binarySearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
-    int start = 0;
+void binarySearch (aluno* adrsAlunos, int start,int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
     int middle;
 
     while (start <= end) {
-        middle = (start + end) / 2;
+        middle = start + (end - start) / 2;
 
         int resultCompare = compareAlunos(alunoBuscar, adrsAlunos[middle], campoBuscar);
 
         if (resultCompare == 0) {
             adrsIndexEncontrados[*qntEncontrados] = middle;
             *qntEncontrados += 1;
+            
+            // Continua buscando elementos na esqueda do vetor
+            binarySearch(adrsAlunos, start, (middle - 1), campoBuscar, alunoBuscar, adrsIndexEncontrados, qntEncontrados);
+            
+            // Continua buscando elementos na direita do vetor
+            binarySearch(adrsAlunos, (middle + 1), end, campoBuscar, alunoBuscar, adrsIndexEncontrados, qntEncontrados);
 
             return;
 
-        } else if (resultCompare = -1) {
+        } else if (resultCompare == - 1) {
             end = middle - 1;
 
-        } else if (resultCompare = 1) {
+        } else if (resultCompare == 1) {
             start = middle + 1;
         };
     };
@@ -544,7 +549,7 @@ aluno createAlunoBuscar (char campoBuscar) {
     return alunoBuscar;
 };
 
-void find (aluno* adrsAlunos, int* nextPosition, int orderedBy) {
+void find (aluno* adrsAlunos, int* nextPosition, char orderedBy) {
     
     if ((*nextPosition) <= 0) {
         printf("\n\n----- NENHUM ALUNO CADASTRADO -----\n\n");
@@ -572,7 +577,7 @@ void find (aluno* adrsAlunos, int* nextPosition, int orderedBy) {
         aluno alunoChave = createAlunoBuscar(campoBuscar);
         
         if (campoBuscar == orderedBy) {
-            binarySearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+            binarySearch(adrsAlunos, 0, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
 
         } else {
             linearSearch(adrsAlunos, (*nextPosition - 1), campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
@@ -610,7 +615,7 @@ void find (aluno* adrsAlunos, int* nextPosition, int orderedBy) {
     };
 };
 
-void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy) {
+void menu (bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, char* ptrOrderedBy) {
 
     char option;
 
@@ -728,7 +733,7 @@ int main () {
     aluno alunos[NUMALUNOS];
     memset(alunos, 0, NUMALUNOS * sizeof(aluno));
     int nextPosition = 0;
-    int orderedBy = 0;
+    char orderedBy = 0;
 
     readFile(alunos, "alunos", &nextPosition);
 
