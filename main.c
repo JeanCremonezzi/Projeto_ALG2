@@ -30,7 +30,7 @@ int partition(aluno* adrsAlunos, int start, int end, char field);
 int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 void find(aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy);
-void linearSearch(aluno* adrsAlunos, int* nextPosition, char campoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
+void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
@@ -158,85 +158,13 @@ void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qnt
     };
 };
 
-void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
+void linearSearch (aluno* adrsAlunos, int* nextPosition, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
 
-    if ((*nextPosition - 1) < 0) {
-        printf("\n---------- NENHUM ALUNO CADASTRADO ---------\n\n");
-
-    } else {
-        aluno alunoBuscar;
-
-        switch (campoBuscar) {
-            case '1':
-                printf("\n> Nome: ");
-                fgets(alunoBuscar.nome, TAMNOME + 1, stdin);
-                alunoBuscar.nome[strcspn(alunoBuscar.nome, "\n")] = 0;
-                strcpy(alunoBuscar.nome, strLower(alunoBuscar.nome));
-
-                printf("> Sobrenome: ");
-                fflush(stdin);
-                fgets(alunoBuscar.sobrenome, TAMNOME + 1, stdin);
-                alunoBuscar.sobrenome[strcspn(alunoBuscar.sobrenome, "\n")] = 0;
-                strcpy(alunoBuscar.sobrenome, strLower(alunoBuscar.sobrenome));
-
-                break;
-
-            case '2':
-                printf("> Sobrenome: ");
-                fflush(stdin);
-                fgets(alunoBuscar.sobrenome, TAMNOME + 1, stdin);
-                alunoBuscar.sobrenome[strcspn(alunoBuscar.sobrenome, "\n")] = 0;
-                strcpy(alunoBuscar.sobrenome, strLower(alunoBuscar.sobrenome));
-
-                campoBuscar = '7';
-
-                break;
-
-            case '3':
-                printf("\n> Dia: ");
-                scanf("%i", &alunoBuscar.datadenascimento.dia);
-
-                printf("> Mes: ");
-                scanf("%i", &alunoBuscar.datadenascimento.mes);
-
-                printf("> Ano: ");
-                scanf("%i", &alunoBuscar.datadenascimento.ano);
-
-                break;
-
-            case '4':
-                printf("\n> Prontuario: ");
-                scanf("%i", &alunoBuscar.prontuario);
-
-                break;
-
-            case '5':
-                printf("\n> Curso: ");
-                fflush(stdin);
-                fgets(alunoBuscar.curso, TAMCURSO, stdin);
-                alunoBuscar.curso[strcspn(alunoBuscar.curso, "\n")] = 0;
-                strcpy(alunoBuscar.curso, strLower(alunoBuscar.curso));
-
-                break;
-
-            case '6':
-                printf("\n> Nome: ");
-                fgets(alunoBuscar.nome, TAMNOME + 1, stdin);
-                alunoBuscar.nome[strcspn(alunoBuscar.nome, "\n")] = 0;
-                strcpy(alunoBuscar.nome, strLower(alunoBuscar.nome));
-
-                break;
-
-            default:
-                printf("\n-------- OPCAO INVALIDA --------\n");
-        };
-
-        for (int i = 0; i <= (*nextPosition - 1); i++) {
-            if (compareAlunos(alunoBuscar, adrsAlunos[i], campoBuscar) == 0) {
+    for (int i = 0; i <= (*nextPosition - 1); i++) {
+        if (compareAlunos(alunoBuscar, adrsAlunos[i], campoBuscar) == 0) {
                                             
-                adrsIndexEncontrados[*qntEncontrados] = i;
-                *qntEncontrados += 1;
-            };
+            adrsIndexEncontrados[*qntEncontrados] = i;
+            *qntEncontrados += 1;
         };
     };
 };
@@ -520,56 +448,135 @@ void readFile (aluno* adrsAlunos, char* fileName, int* nextPosition) {
 
 };
 
+aluno createAlunoBuscar (char campoBuscar) {
+    aluno alunoBuscar;
+
+    switch (campoBuscar) {
+        case '1':
+            printf("\n> Nome: ");
+            fgets(alunoBuscar.nome, TAMNOME + 1, stdin);
+            alunoBuscar.nome[strcspn(alunoBuscar.nome, "\n")] = 0;
+            strcpy(alunoBuscar.nome, strLower(alunoBuscar.nome));
+
+            printf("> Sobrenome: ");
+            fflush(stdin);
+            fgets(alunoBuscar.sobrenome, TAMNOME + 1, stdin);
+            alunoBuscar.sobrenome[strcspn(alunoBuscar.sobrenome, "\n")] = 0;
+            strcpy(alunoBuscar.sobrenome, strLower(alunoBuscar.sobrenome));
+
+            break;
+
+        case '2':
+            printf("> Sobrenome: ");
+            fflush(stdin);
+            fgets(alunoBuscar.sobrenome, TAMNOME + 1, stdin);
+            alunoBuscar.sobrenome[strcspn(alunoBuscar.sobrenome, "\n")] = 0;
+            strcpy(alunoBuscar.sobrenome, strLower(alunoBuscar.sobrenome));
+
+            campoBuscar = '7';
+
+            break;
+
+        case '3':
+            printf("\n> Dia: ");
+            scanf("%i", &alunoBuscar.datadenascimento.dia);
+
+            printf("> Mes: ");
+            scanf("%i", &alunoBuscar.datadenascimento.mes);
+
+            printf("> Ano: ");
+            scanf("%i", &alunoBuscar.datadenascimento.ano);
+
+            break;
+
+        case '4':
+            printf("\n> Prontuario: ");
+            scanf("%i", &alunoBuscar.prontuario);
+
+            break;
+
+        case '5':
+            printf("\n> Curso: ");
+            fflush(stdin);
+            fgets(alunoBuscar.curso, TAMCURSO, stdin);
+            alunoBuscar.curso[strcspn(alunoBuscar.curso, "\n")] = 0;
+            strcpy(alunoBuscar.curso, strLower(alunoBuscar.curso));
+
+            break;
+
+        case '6':
+            printf("\n> Nome: ");
+            fgets(alunoBuscar.nome, TAMNOME + 1, stdin);
+            alunoBuscar.nome[strcspn(alunoBuscar.nome, "\n")] = 0;
+            strcpy(alunoBuscar.nome, strLower(alunoBuscar.nome));
+
+            break;
+
+        default:
+            printf("\n-------- OPCAO INVALIDA --------\n");
+    };
+
+    return alunoBuscar;
+};
+
 void find (aluno* adrsAlunos, int* nextPosition, int* ptrOrderedBy) {
     
-    char campoBuscar;
-    int indexEncontrados[NUMALUNOS];
-    int qntEncontrados = 0;
-
-    fflush(stdin);
-
-    printf("\n> Buscar por: ");
-    printf("\n 1- Nome e Sobrenome");
-    printf("\n 2- Sobrenome");
-    printf("\n 3- Nascimento");
-    printf("\n 4- Prontuario");
-    printf("\n 5- Curso");
-    printf("\n 6- Nome");
-            
-    printf("\n\n > Escolha um campo: ");
-    scanf("%c", &campoBuscar);
-    fflush(stdin);
-
-    linearSearch(adrsAlunos, nextPosition, campoBuscar, indexEncontrados, &qntEncontrados);
-
-    if (qntEncontrados == 0) {
-        printf("\n----- NENHUM ALUNO FOI ENCONTRADO -----\n\n");
+    if ((*nextPosition) <= 0) {
+        printf("\n\n----- NENHUM ALUNO CADASTRADO -----\n\n");
 
     } else {
-        char deleteChoose;
 
-        for (int i = 0; i < qntEncontrados; i++) {
-            int indexEncontrado = indexEncontrados[i];
+        char campoBuscar;
+        int indexEncontrados[NUMALUNOS];
+        int qntEncontrados = 0;
 
-            printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[indexEncontrado].nome, adrsAlunos[indexEncontrado].sobrenome);
-            printf("\n > Nascimento: %i/%i/%i", 
-            adrsAlunos[indexEncontrado].datadenascimento.dia, 
-            adrsAlunos[indexEncontrado].datadenascimento.mes,
-            adrsAlunos[indexEncontrado].datadenascimento.ano);
-            printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[indexEncontrado].prontuario, adrsAlunos[indexEncontrado].curso);
-        };
-
-        printf("\n> Deseja remover os alunos encontrados? (s/n): ");
         fflush(stdin);
-        scanf("%c", &deleteChoose);
 
-        if (deleteChoose == 's' || deleteChoose == 'S') {
-            printf("\n-------- ALUNOS DELETADOS --------");
-            delete(adrsAlunos, nextPosition, indexEncontrados, qntEncontrados);
+        printf("\n> Buscar por: ");
+        printf("\n 1- Nome e Sobrenome");
+        printf("\n 2- Sobrenome");
+        printf("\n 3- Nascimento");
+        printf("\n 4- Prontuario");
+        printf("\n 5- Curso");
+        printf("\n 6- Nome");
+                
+        printf("\n\n > Escolha um campo: ");
+        scanf("%c", &campoBuscar);
+        fflush(stdin);
+
+        aluno alunoChave = createAlunoBuscar(campoBuscar);
+        
+        linearSearch(adrsAlunos, nextPosition, campoBuscar, alunoChave, indexEncontrados, &qntEncontrados);
+
+        if (qntEncontrados == 0) {
+            printf("\n----- NENHUM ALUNO FOI ENCONTRADO -----\n\n");
+
+        } else {
+            char deleteChoose;
+
+            for (int i = 0; i < qntEncontrados; i++) {
+                int indexEncontrado = indexEncontrados[i];
+
+                printf("\n > Nome e Sobrenome: %s %s", adrsAlunos[indexEncontrado].nome, adrsAlunos[indexEncontrado].sobrenome);
+                printf("\n > Nascimento: %i/%i/%i", 
+                adrsAlunos[indexEncontrado].datadenascimento.dia, 
+                adrsAlunos[indexEncontrado].datadenascimento.mes,
+                adrsAlunos[indexEncontrado].datadenascimento.ano);
+                printf("\n > Prontuario e Curso: %i - %s\n", adrsAlunos[indexEncontrado].prontuario, adrsAlunos[indexEncontrado].curso);
+            };
+
+            printf("\n> Deseja remover os alunos encontrados? (s/n): ");
+            fflush(stdin);
+            scanf("%c", &deleteChoose);
+
+            if (deleteChoose == 's' || deleteChoose == 'S') {
+                printf("\n-------- ALUNOS DELETADOS --------");
+                delete(adrsAlunos, nextPosition, indexEncontrados, qntEncontrados);
+            };
+
+            printf("\n\n");
+
         };
-
-        printf("\n\n");
-
     };
 };
 
