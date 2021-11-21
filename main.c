@@ -31,6 +31,7 @@ int push(aluno* adrsAlunos, int* adrsNextPosition);
 void delete(aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados);
 void find(aluno* adrsAlunos, int* nextPosition, int orderedBy);
 void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
+void binarySearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados);
 void menu(bool* ptrLoop, aluno *ptrAlunos, int* nextPosition, int* ptrOrderedBy);
 void printArray(aluno* adrsAlunos, int maxIndice);
 int compareAlunos(aluno aluno1, aluno aluno2, char field);
@@ -170,8 +171,28 @@ void linearSearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBusc
 };
 
 void binarySearch (aluno* adrsAlunos, int end, char campoBuscar, aluno alunoBuscar, int* adrsIndexEncontrados, int* qntEncontrados) {
+    int start = 0;
+    int middle;
 
-}
+    while (start <= end) {
+        middle = (start + end) / 2;
+
+        int resultCompare = compareAlunos(alunoBuscar, adrsAlunos[middle], campoBuscar);
+
+        if (resultCompare == 0) {
+            adrsIndexEncontrados[*qntEncontrados] = middle;
+            *qntEncontrados += 1;
+
+            return;
+
+        } else if (resultCompare = -1) {
+            end = middle - 1;
+
+        } else if (resultCompare = 1) {
+            start = middle + 1;
+        };
+    };
+};
 
 int datecmp (data dataA, data dataB) {
 
