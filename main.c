@@ -146,7 +146,7 @@ void printArray (aluno* adrsAlunos, int maxIndice) {
 
 void delete (aluno* adrsAlunos, int* nextPosition, int* adrsEncontrados, int qntEncontrados) {
 
-    for (int i = 0; i < qntEncontrados; i++) {
+    for (int i = (qntEncontrados - 1); i >= 0; i--) {
 
         if (adrsEncontrados[i] != (*nextPosition - 1)) {
             adrsAlunos[adrsEncontrados[i]] = adrsAlunos[*nextPosition - 1];
